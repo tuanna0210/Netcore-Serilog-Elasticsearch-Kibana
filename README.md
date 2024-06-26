@@ -1,0 +1,1 @@
+# Netcore-Serilog-Elasticsearch-Kibana
