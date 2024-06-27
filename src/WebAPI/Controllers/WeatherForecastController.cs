@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Serilog.Context;
 
 namespace WebAPI.Controllers
 {
@@ -21,6 +22,24 @@ namespace WebAPI.Controllers
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {
+            using (LogContext.PushProperty("Let's see", 12345))
+            {
+                _logger.LogInformation("Hello {@ABC}", new
+                {
+                    Name = "Tuan",
+                    Age = 31
+                });
+                _logger.LogCritical("Fatal");
+            }
+
+            try
+            {
+                throw new Exception("Test exception");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical(ex, "Something went wrong");
+            }
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
