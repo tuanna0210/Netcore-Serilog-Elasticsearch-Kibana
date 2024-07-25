@@ -1,4 +1,5 @@
 using Serilog;
+using WebAPI.Exceptions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +15,8 @@ builder.Host.UseSerilog((context, configuration) =>
     //configuration.WriteTo.Elasticsearch();
     configuration.ReadFrom.Configuration(context.Configuration);
 });
-
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 
 
 var app = builder.Build();
@@ -27,7 +29,7 @@ if (app.Environment.IsDevelopment())
 }
 //Add support to logging request with SERILOG
 app.UseSerilogRequestLogging();
-
+app.UseExceptionHandler(options => { });
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

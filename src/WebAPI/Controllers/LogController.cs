@@ -17,6 +17,7 @@ namespace WebAPI.Controllers
         [HttpPost(Name = "LogInformation")]
         public IActionResult LogInformation([FromBody] Input input)
         {
+            throw new Exception("Test expeption");
             _logger.LogInformation("Body input {@body}", input);
 
             return Ok();
